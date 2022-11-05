@@ -18,8 +18,15 @@ builder.Host.ConfigureLogging(logging =>
 builder.Services.AddWebOptimizer(pipeline =>
 {
     Console.WriteLine("Adding bundle for scss");
-    pipeline.AddScssBundle("/css/app.css", "./app.scss");
+    //pipeline.AddScssBundle("/css/app.css", "./app.scss");
     pipeline.CompileScssFiles();
+});
+
+var url = "https://mnmobahtigndccqejpgq.supabase.co";
+var key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ubW9iYWh0aWduZGNjcWVqcGdxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjY5MTkwODAsImV4cCI6MTk4MjQ5NTA4MH0.ajo5lDIIwIyd2TpI-z4SISVOq9HWBr2uDfLNk5gWMN0";
+builder.Services.AddSingleton<Supabase.Client>((serviceProvider) =>
+{
+    return Supabase.Client.InitializeAsync(url, key, new Supabase.SupabaseOptions { }).Result;
 });
 
 builder.WebHost.ConfigureKestrel(options =>
@@ -42,10 +49,6 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-var f = app.Environment.WebRootFileProvider;
-app.Logger.LogWarning("Sample");
-app.Logger.LogWarning(f.GetType().Name);
 
 app.UseHttpsRedirection();
 app.UseHttpLogging();

@@ -1,0 +1,22 @@
+@page "/auth/callback"
+@inject Supabase.Client Client
+@inject NavigationManager NavManager
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @token</p>
+
+@code {
+    public string token;
+    protected override async Task OnInitializedAsync()
+    {
+        string url = new Uri(NavManager.Uri);
+        Console.WriteLine("Stuff Before!" + url);
+
+        var session = await Client.Auth.GetSessionFromUrl(url);
+        Console.WriteLine("Stuff!" + session.User.Id);
+        this.token = session.A
+    }
+}
